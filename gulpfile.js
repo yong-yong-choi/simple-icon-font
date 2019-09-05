@@ -25,6 +25,21 @@ gulp.task('Iconfont', function(done){
           .on('finish', cb);
       });
     },
+    function handleHtmlTemplate (cb) {
+      iconStream.on('glyphs', function(glyphs, options) {
+        // html
+        gulp.src('templates/font-template.html')
+          .pipe(consolidate('lodash', {
+            glyphs: glyphs,
+            fontName: 'font-icon',
+            className: 'ficon',
+            cssPath: 'css/font-icon.css'
+          }))
+          .pipe(gulp.dest('./'))
+          .on('finish', cb);
+          console.log('Create "font-template.html" file...');
+      });
+    },
     function handleFonts (cb) {
       iconStream
         .pipe(gulp.dest('fonts/'))
