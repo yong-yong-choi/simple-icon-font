@@ -5,21 +5,22 @@ var consolidate = require('gulp-consolidate');
  
 gulp.task('Iconfont', function(done){
   var iconStream = gulp.src(['icons/*.svg'])
-    .pipe(iconfont({ fontName: 'font-icon' }));
- 
+   .pipe(iconfont({
+      normalize: true,
+      fontName: 'font-icon',
+      formats: ['ttf', 'eot', 'woff', 'woff2', 'svg'],
+      appendCodepoints: true,
+      fontHeight: 1001
+    }))
   async.parallel([
     function handleGlyphs (cb) {
       iconStream.on('glyphs', function(glyphs, options) {
         gulp.src('templates/font-icon.css')
           .pipe(consolidate('lodash', {
             glyphs: glyphs,
-            normalize: true,
-            formats: ['ttf', 'eot', 'woff', 'woff2', 'svg'],
             fontName: 'font-icon',
             fontPath: '../fonts/',
-            className: 'ficon',
-            appendCodepoints: true,
-      		fontHeight: 1001
+            className: 'ficon'
           }))
           .pipe(gulp.dest('css/'))
           .on('finish', cb);
